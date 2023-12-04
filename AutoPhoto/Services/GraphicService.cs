@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using AutoPhoto.Models;
-using Emgu.CV.Reg;
+
 
 namespace AutoPhoto.Services
 {
@@ -56,6 +56,37 @@ namespace AutoPhoto.Services
             }
             
             return color;
+        }
+
+        public static Dictionary<string, Color> GetPixelsFromApplication(string procName, Dictionary<string, Point> points)
+        {
+            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains("R2 Original 1338"));
+            //proc.MainModule.FileName
+            var rect = new Rect();
+            GetWindowRect(proc.MainWindowHandle, ref rect);
+            
+            int width = rect.right - rect.left;
+            int height = rect.bottom - rect.top;
+            var colors = new Dictionary<string, Color>();
+
+            using (var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb))
+            {
+                using (Graphics graphics = Graphics.FromImage(bmp))
+                {
+                    graphics.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                    
+                    foreach (var point in points)
+                    {
+                        var color = new Color();
+
+                        color = bmp.GetPixel(point.Value.X, point.Value.Y);
+                        colors.Add(point.Key, color);
+                    }
+                    
+                }
+            }
+
+            return colors;
         }
 
         public static IntPtr GetProccessPointer(string procName)

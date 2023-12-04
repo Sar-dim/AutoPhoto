@@ -19,6 +19,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using WindowsInput.Native;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace AutoPhoto
 {
@@ -53,6 +54,8 @@ namespace AutoPhoto
                 var startingData = FileService.ReadFromFile();
                 if (startingData != null)
                 {
+                    PotionCountPixelX.Text = startingData.PotionCountX;
+                    PotionCountPixelY.Text = startingData.PotionCountY;
                     PotionPixelX.Text = startingData.PotionPixelX;
                     PotionPixelY.Text = startingData.PotionPixelY;
                     PotionDelay.Text = startingData.PotionDelay;
@@ -74,11 +77,16 @@ namespace AutoPhoto
         {
             try
             {
+                
                 int potionPixelX = Int32.Parse(PotionPixelX.Text);
                 int potionPixelY = Int32.Parse(PotionPixelY.Text);
+                int potionCountX = Int32.Parse(PotionCountPixelX.Text);
+                int potionCountY = Int32.Parse(PotionCountPixelY.Text);
                 Point point = new Point(potionPixelX, potionPixelY);
+                Point pointCount = new Point(potionCountX, potionCountY);
                 var delay = Int32.Parse(PotionDelay.Text);
                 _cancellationToken = new CancellationTokenSource();
+                
 
                 FileService.SaveToFile(CreateDataForFile());
 
@@ -94,8 +102,10 @@ namespace AutoPhoto
                 {
                     ExceptionTextBlock.Text = "Банки пьются";
                 }
-
-                Task.Run(() => StartCheckingForPotion(point, delay, VirtualKeyCode.VK_Q)); //ushort key 0x10
+                var points = new Dictionary<string, Point>();
+                points.Add("Potion", new Point(pointCount.X, pointCount.Y));
+                points.Add("HP_Potion", new Point(point.X, point.Y));
+                Task.Run(() => StartCheckingForPotion(delay, VirtualKeyCode.VK_Q, points)); //ushort key 0x10
                 _isPotionWorking = true;
             }
             catch (Exception ex)
@@ -142,7 +152,7 @@ namespace AutoPhoto
             }
         }
 
-        private async Task StartCheckingForPotion(Point point, int delay, VirtualKeyCode keyCode)
+        private async Task StartCheckingForPotion(int delay, VirtualKeyCode keyCode, Dictionary<string, Point> points)
         {
             do
             {
@@ -150,9 +160,10 @@ namespace AutoPhoto
 
                 try
                 {
-                    var color = GraphicService.GetPixelFromApplication(R2ProccessName, point);
 
-                    if (color.R < 100 && color.R != 0)
+                    var colors = GraphicService.GetPixelsFromApplication(R2ProccessName, points);
+
+                    if (colors["HP_Potion"].R < 100 && colors["HP_Potion"].R != 0 && colors["Potion"].R > 35)
                     {
                         var r2Ptr = GraphicService.GetProccessPointer(R2ProccessName);
                         var foregroundPtr = GraphicService.GetForegroundWindow();
@@ -315,6 +326,8 @@ namespace AutoPhoto
                 TeleportPixelX = TeleportPixelX.Text,
                 TeleportPixelY = TeleportPixelY.Text,
                 TeleportDelay = TeleportDelay.Text,
+                PotionCountX = PotionCountPixelX.Text,
+                PotionCountY = PotionCountPixelY.Text
             };
             return result;
         }

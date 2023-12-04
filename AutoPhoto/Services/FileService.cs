@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
-using static Emgu.CV.Dai.OpenVino;
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoPhoto.Services
@@ -37,6 +37,8 @@ namespace AutoPhoto.Services
     public class DataForFile
     {
         public string PotionPixelX { get; set; }
+        public string PotionCountX { get; set; }
+        public string PotionCountY { get; set; }
         public string PotionPixelY { get; set; }
         public string PotionDelay { get; set; }
         public string TeleportPixelX { get; set; }
