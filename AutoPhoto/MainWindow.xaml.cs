@@ -19,6 +19,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using WindowsInput.Native;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace AutoPhoto
 {
@@ -34,7 +35,9 @@ namespace AutoPhoto
         private static extern IntPtr GetMessageExtraInfo();
 
         
-        private const string R2ProccessName = "R2Client";
+        private const string _r2ProccessName = "R2Client";
+        private const string _potion = "Potion";
+        private const string _hpPotion = "HP_Potion";
         private CancellationTokenSource _cancellationToken;
         private InputSimulator _inputSimulator = new InputSimulator();
         private bool _tpPressed = false;
@@ -53,8 +56,10 @@ namespace AutoPhoto
                 var startingData = FileService.ReadFromFile();
                 if (startingData != null)
                 {
-                    PotionPixelX.Text = startingData.PotionPixelX;
-                    PotionPixelY.Text = startingData.PotionPixelY;
+                    PotionPixelX.Text = startingData.PotionCountX;
+                    PotionPixelY.Text = startingData.PotionCountY;
+                    HPPotionPixelX.Text = startingData.HPPotionPixelX;
+                    HPPotionPixelY.Text = startingData.HPPotionPixelY;
                     PotionDelay.Text = startingData.PotionDelay;
                     TeleportPixelX.Text = startingData.TeleportPixelX;
                     TeleportPixelY.Text = startingData.TeleportPixelY;
@@ -74,12 +79,9 @@ namespace AutoPhoto
         {
             try
             {
-                int potionPixelX = Int32.Parse(PotionPixelX.Text);
-                int potionPixelY = Int32.Parse(PotionPixelY.Text);
-                Point point = new Point(potionPixelX, potionPixelY);
                 var delay = Int32.Parse(PotionDelay.Text);
                 _cancellationToken = new CancellationTokenSource();
-
+                
                 FileService.SaveToFile(CreateDataForFile());
 
                 PotionButton.IsEnabled = false;
@@ -95,7 +97,13 @@ namespace AutoPhoto
                     ExceptionTextBlock.Text = "Банки пьются";
                 }
 
-                Task.Run(() => StartCheckingForPotion(point, delay, VirtualKeyCode.VK_Q)); //ushort key 0x10
+                var points = new Dictionary<string, Point>
+                {
+                    { _potion, new Point(Int32.Parse(PotionCountPixelX.Text), Int32.Parse(PotionCountPixelY.Text)) },
+                    { _hpPotion, new Point(Int32.Parse(HPPotionPixelX.Text), Int32.Parse(HPPotionPixelY.Text)) }
+                };
+
+                Task.Run(() => StartCheckingForPotion(delay, VirtualKeyCode.VK_Q, points)); //ushort key 0x10
                 _isPotionWorking = true;
             }
             catch (Exception ex)
@@ -142,7 +150,7 @@ namespace AutoPhoto
             }
         }
 
-        private async Task StartCheckingForPotion(Point point, int delay, VirtualKeyCode keyCode)
+        private async Task StartCheckingForPotion(int delay, VirtualKeyCode keyCode, Dictionary<string, Point> points)
         {
             do
             {
@@ -150,11 +158,12 @@ namespace AutoPhoto
 
                 try
                 {
-                    var color = GraphicService.GetPixelFromApplication(R2ProccessName, point);
 
-                    if (color.R < 100 && color.R != 0)
+                    var colors = GraphicService.GetPixelsFromApplication(_r2ProccessName, points);
+
+                    if (colors["HP_Potion"].R < 100 && colors["HP_Potion"].R != 0 && colors["Potion"].R > 35)
                     {
-                        var r2Ptr = GraphicService.GetProccessPointer(R2ProccessName);
+                        var r2Ptr = GraphicService.GetProccessPointer(_r2ProccessName);
                         var foregroundPtr = GraphicService.GetForegroundWindow();
 
                         if (r2Ptr != foregroundPtr)
@@ -179,7 +188,7 @@ namespace AutoPhoto
 
                 try
                 {
-                    var color = GraphicService.GetPixelFromApplication(R2ProccessName, point);
+                    var color = GraphicService.GetPixelFromApplication(_r2ProccessName, point);
 
                     if (_tpPressed)
                     {
@@ -195,7 +204,7 @@ namespace AutoPhoto
 
                     if (color.R < 100 && color.R != 0)
                     {
-                        var r2Ptr = GraphicService.GetProccessPointer(R2ProccessName);
+                        var r2Ptr = GraphicService.GetProccessPointer(_r2ProccessName);
                         var foregroundPtr = GraphicService.GetForegroundWindow();
                         if (switchWindow && r2Ptr != foregroundPtr)
                         {
@@ -309,12 +318,14 @@ namespace AutoPhoto
         {
             var result = new DataForFile
             {
-                PotionPixelX = PotionPixelX.Text,
-                PotionPixelY = PotionPixelY.Text,
+                HPPotionPixelX = HPPotionPixelX.Text,
+                HPPotionPixelY = HPPotionPixelY.Text,
                 PotionDelay = PotionDelay.Text,
                 TeleportPixelX = TeleportPixelX.Text,
                 TeleportPixelY = TeleportPixelY.Text,
                 TeleportDelay = TeleportDelay.Text,
+                PotionCountX = PotionCountPixelX.Text,
+                PotionCountY = PotionCountPixelY.Text
             };
             return result;
         }
