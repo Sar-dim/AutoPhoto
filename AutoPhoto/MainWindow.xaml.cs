@@ -99,7 +99,7 @@ namespace AutoPhoto
 
                 var points = new Dictionary<string, Point>
                 {
-                    { _potion, new Point(Int32.Parse(PotionCountPixelX.Text), Int32.Parse(PotionCountPixelY.Text)) },
+                    { _potion, new Point(Int32.Parse(PotionPixelX.Text), Int32.Parse(PotionPixelY.Text)) },
                     { _hpPotion, new Point(Int32.Parse(HPPotionPixelX.Text), Int32.Parse(HPPotionPixelY.Text)) }
                 };
 
@@ -161,7 +161,7 @@ namespace AutoPhoto
 
                     var colors = GraphicService.GetPixelsFromApplication(_r2ProccessName, points);
 
-                    if (colors["HP_Potion"].R < 100 && colors["HP_Potion"].R != 0 && colors["Potion"].R > 35)
+                    if (colors[_hpPotion].R < 100 && colors[_hpPotion].R != 0 && colors[_potion].R > 35)
                     {
                         var r2Ptr = GraphicService.GetProccessPointer(_r2ProccessName);
                         var foregroundPtr = GraphicService.GetForegroundWindow();
@@ -324,8 +324,8 @@ namespace AutoPhoto
                 TeleportPixelX = TeleportPixelX.Text,
                 TeleportPixelY = TeleportPixelY.Text,
                 TeleportDelay = TeleportDelay.Text,
-                PotionCountX = PotionCountPixelX.Text,
-                PotionCountY = PotionCountPixelY.Text
+                PotionCountX = PotionPixelX.Text,
+                PotionCountY = PotionPixelY.Text
             };
             return result;
         }
