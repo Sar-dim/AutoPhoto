@@ -14,19 +14,19 @@
                         <TextBlock HorizontalAlignment="Center" Text="Банки"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Пиксель ХП X"></TextBlock>
-                            <TextBox x:Name="PotionPixelX" Width="100" Text="1181"></TextBox>
+                            <TextBox x:Name="HPPotionPixelX" Width="100" Text="1181"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Пиксель ХП Y"></TextBlock>
-                            <TextBox x:Name="PotionPixelY" Width="100" Text="1386"></TextBox>
+                            <TextBox x:Name="HPPotionPixelY" Width="100" Text="1386"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Пиксель Банок X"></TextBlock>
-                            <TextBox x:Name="PotionCountPixelX" Width="100" Text="902"></TextBox>
+                            <TextBox x:Name="PotionPixelX" Width="100" Text="902"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Пиксель Банок Y"></TextBlock>
-                            <TextBox x:Name="PotionCountPixelY" Width="100" Text="1423"></TextBox>
+                            <TextBox x:Name="PotionPixelY" Width="100" Text="1423"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Задержка мсек"></TextBlock>

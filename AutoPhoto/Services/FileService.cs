@@ -36,10 +36,10 @@ namespace AutoPhoto.Services
 
     public class DataForFile
     {
-        public string PotionPixelX { get; set; }
+        public string HPPotionPixelX { get; set; }
         public string PotionCountX { get; set; }
         public string PotionCountY { get; set; }
-        public string PotionPixelY { get; set; }
+        public string HPPotionPixelY { get; set; }
         public string PotionDelay { get; set; }
         public string TeleportPixelX { get; set; }
         public string TeleportPixelY { get; set; }
