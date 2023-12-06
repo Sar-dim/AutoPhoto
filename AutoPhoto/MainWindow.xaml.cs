@@ -221,9 +221,13 @@ namespace AutoPhoto
                             continue;
                         }
 
-                        _inputSimulator.Keyboard.KeyPress(keyCode);
-                        Thread.Sleep(_rnd.Next(20, 40));
-                        _inputSimulator.Keyboard.KeyPress(keyCode);
+                        var colorAfterTP = new Color();
+                        do
+                        {
+                            _inputSimulator.Keyboard.KeyPress(keyCode);
+                            Thread.Sleep(_rnd.Next(20, 30));
+                            colorAfterTP = GraphicService.GetPixelFromApplication(_r2ProccessName, point);
+                        } while (colorAfterTP.R != 0);
                         _tpPressed = true;
 
                         //PressButton(keyCode);
