@@ -161,7 +161,7 @@ namespace AutoPhoto
 
                     var colors = GraphicService.GetPixelsFromApplication(_r2ProccessName, points);
 
-                    if (colors[_hpPotion].R < 100 && colors[_hpPotion].R != 0 && colors[_potion].R > 35)
+                    if (colors[_hpPotion].R < 100 && colors[_hpPotion].R != 0 && colors[_potion].R > 100)
                     {
                         var r2Ptr = GraphicService.GetProccessPointer(_r2ProccessName);
                         var foregroundPtr = GraphicService.GetForegroundWindow();
@@ -222,12 +222,14 @@ namespace AutoPhoto
                         }
 
                         var colorAfterTP = new Color();
+                        var tpCounter = 0;
                         do
                         {
                             _inputSimulator.Keyboard.KeyPress(keyCode);
-                            Thread.Sleep(_rnd.Next(20, 30));
+                            Thread.Sleep(_rnd.Next(120, 150));
                             colorAfterTP = GraphicService.GetPixelFromApplication(_r2ProccessName, point);
-                        } while (colorAfterTP.R != 0);
+                            tpCounter++;
+                        } while (colorAfterTP.R != 0 && tpCounter < 3);
                         _tpPressed = true;
 
                         //PressButton(keyCode);

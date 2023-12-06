@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoPhoto"
         mc:Ignorable="d"
-        Title="AutoPhoto" Height="450" Width="217">
+        Title="AutoPhoto" Height="490" Width="217">
     <Grid>
         <StackPanel Width="200" Orientation="Vertical" HorizontalAlignment="Left">
             <StackPanel Margin="5" Orientation="Vertical">
