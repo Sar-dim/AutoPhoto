@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoPhoto"
         mc:Ignorable="d"
-        Title="AutoPhoto" Height="490" Width="217">
+        Title="AutoPhoto" Height="570" Width="217">
     <Grid>
         <StackPanel Width="200" Orientation="Vertical" HorizontalAlignment="Left">
             <StackPanel Margin="5" Orientation="Vertical">
@@ -71,7 +71,17 @@
             <StackPanel Width="190" Margin="5" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Border CornerRadius="6" BorderBrush="Gray" Background="LightGray" BorderThickness="2">
                     <StackPanel>
-                        <Button Width="100" Margin="5" x:Name="PotionAndTeleportButton" Click="PotionAndTeleportButton_Click" >Применить оба</Button>
+                        <TextBlock Width="115" HorizontalAlignment="Center">Путь к папке с игрой</TextBlock>
+                        <TextBox Margin="5" x:Name="GamePathTextBox"></TextBox>
+                        <CheckBox Width="130" Margin="5" x:Name="DuplicateSoundsCheckBox" HorizontalContentAlignment="Center">Дублировать звуки</CheckBox>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Width="190" Margin="5" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Border CornerRadius="6" BorderBrush="Gray" Background="LightGray" BorderThickness="2">
+                    <StackPanel>
+                        <Button Width="100" Margin="5" x:Name="PotionAndTeleportButton" Click="PotionAndTeleportButton_Click" >Применить всё</Button>
                         <Button Width="100" Margin="5" x:Name="PotionAndTeleportCancel" Click="PotionAndTeleportCancel_Click" >Отменить</Button>
                     </StackPanel>
                 </Border>

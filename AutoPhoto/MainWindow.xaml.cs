@@ -20,6 +20,7 @@ using System.IO;
 using WindowsInput.Native;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Media;
 
 namespace AutoPhoto
 {
@@ -64,6 +65,9 @@ namespace AutoPhoto
                     TeleportPixelX.Text = startingData.TeleportPixelX;
                     TeleportPixelY.Text = startingData.TeleportPixelY;
                     TeleportDelay.Text = startingData.TeleportDelay;
+                    SwitchWindowCheckBox.IsChecked = startingData.IsSwitchToR2;
+                    DuplicateSoundsCheckBox.IsChecked = startingData.IsDuplicateSounds;
+                    GamePathTextBox.Text = startingData.GamePath;
                 }
             } catch { }
             
@@ -246,6 +250,37 @@ namespace AutoPhoto
             PotionAndTeleportButton.IsEnabled = false;
             PotionButton_Click(sender, e);
             TeleportButton_Click(sender, e);
+            DuplicateSouns(sender, e);
+        }
+
+        private void DuplicateSouns(object sender, RoutedEventArgs e)
+        {
+            var filePath = GamePathTextBox.Text;
+            Task.Run(() =>
+            {
+                do
+                {
+                    try
+                    {
+                        FileInfo oFileInfodts = new FileInfo(filePath + "\\sound\\effect\\dts.wav");
+                        if (oFileInfodts.LastAccessTime > DateTime.Now.AddSeconds(-5))
+                        {
+                            SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
+                            player.Play();
+                        }
+
+                        FileInfo oFileInfoEF_1182 = new FileInfo(filePath + "\\sound\\effect\\EF_1182.wav");
+                        if (oFileInfoEF_1182.LastAccessTime > DateTime.Now.AddSeconds(-5))
+                        {
+                            SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
+                            player.Play();
+                        }
+                        Thread.Sleep(200);
+                    }
+                    catch (Exception)
+                    {}
+                } while (true);
+            });
         }
 
         private void PotionAndTeleportCancel_Click(object sender, RoutedEventArgs e)
@@ -331,7 +366,10 @@ namespace AutoPhoto
                 TeleportPixelY = TeleportPixelY.Text,
                 TeleportDelay = TeleportDelay.Text,
                 PotionCountX = PotionPixelX.Text,
-                PotionCountY = PotionPixelY.Text
+                PotionCountY = PotionPixelY.Text,
+                IsSwitchToR2 = SwitchWindowCheckBox.IsChecked ?? false,
+                IsDuplicateSounds = DuplicateSoundsCheckBox.IsChecked ?? false,
+                GamePath = GamePathTextBox.Text,
             };
             return result;
         }

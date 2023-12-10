@@ -44,5 +44,8 @@ namespace AutoPhoto.Services
         public string TeleportPixelX { get; set; }
         public string TeleportPixelY { get; set; }
         public string TeleportDelay { get; set; }
+        public bool IsSwitchToR2 { get; set; }
+        public bool IsDuplicateSounds { get; set; }
+        public string GamePath { get; set; }
     }
 }
