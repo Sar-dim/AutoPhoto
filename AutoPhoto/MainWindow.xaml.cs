@@ -267,6 +267,7 @@ namespace AutoPhoto
                         {
                             SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
                             player.Play();
+                            Thread.Sleep(1000);
                         }
 
                         FileInfo oFileInfoEF_1182 = new FileInfo(filePath + "\\sound\\effect\\EF_1182.wav");
@@ -274,6 +275,7 @@ namespace AutoPhoto
                         {
                             SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
                             player.Play();
+                            Thread.Sleep(1000);
                         }
                         Thread.Sleep(200);
                     }
