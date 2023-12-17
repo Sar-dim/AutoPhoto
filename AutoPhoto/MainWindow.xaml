@@ -73,7 +73,7 @@
                     <StackPanel>
                         <TextBlock Width="115" HorizontalAlignment="Center">Путь к папке с игрой</TextBlock>
                         <TextBox Margin="5" x:Name="GamePathTextBox"></TextBox>
-                        <CheckBox Width="130" Margin="5" x:Name="DuplicateSoundsCheckBox" HorizontalContentAlignment="Center">Дублировать звуки</CheckBox>
+                        <CheckBox Width="165" Margin="5" x:Name="DuplicateSoundsCheckBox" HorizontalContentAlignment="Center">Дублировать звуки шаров</CheckBox>
                     </StackPanel>
                 </Border>
             </StackPanel>

@@ -125,6 +125,7 @@ namespace AutoPhoto
                 int teleportPixelY = Int32.Parse(TeleportPixelY.Text);
                 Point point = new Point(teleportPixelX, teleportPixelY);
                 var delay = Int32.Parse(TeleportDelay.Text);
+                GraphicService.R2Path = GamePathTextBox.Text;
                 _cancellationToken = new CancellationTokenSource();
 
                 FileService.SaveToFile(CreateDataForFile());
@@ -250,7 +251,10 @@ namespace AutoPhoto
             PotionAndTeleportButton.IsEnabled = false;
             PotionButton_Click(sender, e);
             TeleportButton_Click(sender, e);
-            DuplicateSouns(sender, e);
+            if (DuplicateSoundsCheckBox.IsChecked.HasValue && DuplicateSoundsCheckBox.IsChecked.Value)
+            {
+                DuplicateSouns(sender, e);
+            }
         }
 
         private void DuplicateSouns(object sender, RoutedEventArgs e)

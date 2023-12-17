@@ -14,11 +14,12 @@ namespace AutoPhoto.Services
 {
     public static class GraphicService
     {
+        public static string R2Path = string.Empty;
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Models.Rect rect);
         public static Bitmap CaptureApplication(string procName)
         {
-            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains("R2 Original 1338"));
+            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains(R2Path));
             //proc.MainModule.FileName
             var rect = new Rect();
             GetWindowRect(proc.MainWindowHandle, ref rect);
@@ -37,7 +38,7 @@ namespace AutoPhoto.Services
 
         public static Color GetPixelFromApplication(string procName, Point point)
         {
-            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains("R2 Original 1338"));
+            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains(R2Path));
             //proc.MainModule.FileName
             var rect = new Rect();
             GetWindowRect(proc.MainWindowHandle, ref rect);
@@ -60,7 +61,7 @@ namespace AutoPhoto.Services
 
         public static Dictionary<string, Color> GetPixelsFromApplication(string procName, Dictionary<string, Point> points)
         {
-            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains("R2 Original 1338"));
+            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains(R2Path));
             //proc.MainModule.FileName
             var rect = new Rect();
             GetWindowRect(proc.MainWindowHandle, ref rect);
@@ -91,7 +92,7 @@ namespace AutoPhoto.Services
 
         public static IntPtr GetProccessPointer(string procName)
         {
-            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains("R2 Original 1338"));
+            var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains(R2Path));
             return proc.MainWindowHandle;
         }
 
