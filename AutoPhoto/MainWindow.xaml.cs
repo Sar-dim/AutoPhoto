@@ -21,6 +21,10 @@ using WindowsInput.Native;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Media;
+using AutoPhoto.Utils;
+using AForge.Imaging;
+using System.Linq;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace AutoPhoto
 {
@@ -68,6 +72,16 @@ namespace AutoPhoto
                     SwitchWindowCheckBox.IsChecked = startingData.IsSwitchToR2;
                     DuplicateSoundsCheckBox.IsChecked = startingData.IsDuplicateSounds;
                     GamePathTextBox.Text = startingData.GamePath;
+
+                    var counter = 0;
+                    foreach (var item in TeleportButtonComboBox.Items)
+                    {
+                        if ((item as TextBlock).Text == startingData.TeleportButton)
+                            TeleportButtonComboBox.SelectedIndex = counter;
+                        counter++;
+                    }
+
+                    ParalyzeCheckBox.IsChecked = startingData.IsCheckParalyze;
                 }
             } catch { }
             
@@ -145,8 +159,9 @@ namespace AutoPhoto
 
                 var isBG = TeleportBGCheckBox.IsChecked.HasValue && TeleportBGCheckBox.IsChecked.Value;
                 var isSwitchWindow = SwitchWindowCheckBox.IsChecked.HasValue && SwitchWindowCheckBox.IsChecked.Value;
+                var teleportButton = (TeleportButtonComboBox.SelectedItem as TextBlock).Text;
 
-                Task.Run(() => StartCheckingForTeleport(point, delay, VirtualKeyCode.VK_F, isSwitchWindow, isBG)); //ushort key 0x21
+                Task.Run(() => StartCheckingForTeleport(point, delay, teleportButton.ToVirtualKeyCode(), isSwitchWindow, isBG)); //ushort key 0x21
                 _isTeleportWorking = true;
             }
             catch (Exception ex)
@@ -231,7 +246,7 @@ namespace AutoPhoto
                         do
                         {
                             _inputSimulator.Keyboard.KeyPress(keyCode);
-                            Thread.Sleep(_rnd.Next(120, 150));
+                            Thread.Sleep(_rnd.Next(80, 120));
                             colorAfterTP = GraphicService.GetPixelFromApplication(_r2ProccessName, point);
                             tpCounter++;
                         } while (colorAfterTP.R != 0 && tpCounter < 3);
@@ -255,6 +270,38 @@ namespace AutoPhoto
             {
                 DuplicateSouns(sender, e);
             }
+            if (ParalyzeCheckBox.IsChecked.HasValue && ParalyzeCheckBox.IsChecked.Value)
+            {
+                CheckParalyze(sender, e);
+            }
+        }
+
+        private void CheckParalyze(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() => 
+            {
+                do
+                {
+                    try
+                    {
+                        var sourceBitmap = GraphicService.CaptureApplication(_r2ProccessName).ConvertToFormatAndCut(PixelFormat.Format24bppRgb);
+                        Bitmap template = Bitmap.FromFile(@"paralyze.png").ConvertToFormat(PixelFormat.Format24bppRgb);
+
+                        ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching(0.921f);
+                        TemplateMatch[] matchings = tm.ProcessImage(sourceBitmap, template);
+                        if (matchings.Any())
+                        {
+                            SoundPlayer player = new SoundPlayer("alarm.wav");
+                            player.Play();
+                            Thread.Sleep(5000);
+                        }
+
+                        Thread.Sleep(2000);
+                    }
+                    catch (Exception)
+                    { }
+                } while (true);
+            });
         }
 
         private void DuplicateSouns(object sender, RoutedEventArgs e)
@@ -266,13 +313,13 @@ namespace AutoPhoto
                 {
                     try
                     {
-                        FileInfo oFileInfodts = new FileInfo(filePath + "\\sound\\effect\\dts.wav");
-                        if (oFileInfodts.LastAccessTime > DateTime.Now.AddSeconds(-5))
-                        {
-                            SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
-                            player.Play();
-                            Thread.Sleep(1000);
-                        }
+                        //FileInfo oFileInfodts = new FileInfo(filePath + "\\sound\\effect\\dts.wav");
+                        //if (oFileInfodts.LastAccessTime > DateTime.Now.AddSeconds(-5))
+                        //{
+                        //    SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
+                        //    player.Play();
+                        //    Thread.Sleep(1000);
+                        //}
 
                         FileInfo oFileInfoEF_1182 = new FileInfo(filePath + "\\sound\\effect\\EF_1182.wav");
                         if (oFileInfoEF_1182.LastAccessTime > DateTime.Now.AddSeconds(-5))
@@ -376,6 +423,8 @@ namespace AutoPhoto
                 IsSwitchToR2 = SwitchWindowCheckBox.IsChecked ?? false,
                 IsDuplicateSounds = DuplicateSoundsCheckBox.IsChecked ?? false,
                 GamePath = GamePathTextBox.Text,
+                TeleportButton = TeleportButtonComboBox.SelectedItem != null ? (TeleportButtonComboBox.SelectedItem as TextBlock).Text : string.Empty,
+                IsCheckParalyze = ParalyzeCheckBox.IsChecked ?? false,
             };
             return result;
         }

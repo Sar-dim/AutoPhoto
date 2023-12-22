@@ -9,6 +9,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="alarm.wav" />
+    <None Remove="paralyze.png" />
+    <None Remove="sound\effect\drop_spell.wav" />
+    <None Remove="sound\effect\dts.wav" />
+    <None Remove="sound\effect\EF_1168.wav" />
+    <None Remove="sound\effect\EF_1182.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="alarm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="paralyze.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\effect\drop_spell.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\effect\dts.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\effect\EF_1168.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\effect\EF_1182.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    
+    <PackageReference Include="AForge.Imaging" Version="2.2.5" />
     
     <PackageReference Include="InputSimulator" Version="1.0.4" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />

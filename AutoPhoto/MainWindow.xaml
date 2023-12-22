@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoPhoto"
         mc:Ignorable="d"
-        Title="AutoPhoto" Height="570" Width="217">
+        Title="AutoPhoto" Height="600" Width="217">
     <Grid>
         <StackPanel Width="200" Orientation="Vertical" HorizontalAlignment="Left">
             <StackPanel Margin="5" Orientation="Vertical">
@@ -59,7 +59,19 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="100" Text="Кнопка"></TextBlock>
-                            <TextBlock Width="100" Text="F"></TextBlock>
+                            <ComboBox x:Name="TeleportButtonComboBox" Width="70" SelectedValuePath="Content">
+                                <TextBlock>F</TextBlock>
+                                <TextBlock>1</TextBlock>
+                                <TextBlock>2</TextBlock>
+                                <TextBlock>3</TextBlock>
+                                <TextBlock>4</TextBlock>
+                                <TextBlock>5</TextBlock>
+                                <TextBlock>6</TextBlock>
+                                <TextBlock>7</TextBlock>
+                                <TextBlock>8</TextBlock>
+                                <TextBlock>9</TextBlock>
+                                <TextBlock>0</TextBlock>
+                            </ComboBox>
                         </StackPanel>
                         <Button Width="100" Margin="5" x:Name="TeleportButton" Click="TeleportButton_Click">Применить</Button>
                         <CheckBox Width="130" Margin="5" x:Name="TeleportBGCheckBox" HorizontalContentAlignment="Center">Применить для БГ</CheckBox>
@@ -74,6 +86,7 @@
                         <TextBlock Width="115" HorizontalAlignment="Center">Путь к папке с игрой</TextBlock>
                         <TextBox Margin="5" x:Name="GamePathTextBox"></TextBox>
                         <CheckBox Width="165" Margin="5" x:Name="DuplicateSoundsCheckBox" HorizontalContentAlignment="Center">Дублировать звуки шаров</CheckBox>
+                        <CheckBox Width="135" Margin="5" x:Name="ParalyzeCheckBox" HorizontalContentAlignment="Center">Проверка паралича</CheckBox>
                     </StackPanel>
                 </Border>
             </StackPanel>

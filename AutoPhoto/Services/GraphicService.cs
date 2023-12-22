@@ -27,13 +27,15 @@ namespace AutoPhoto.Services
             int width = rect.right - rect.left;
             int height = rect.bottom - rect.top;
 
-            var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            using (Graphics graphics = Graphics.FromImage(bmp))
+            using (var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb))
             {
-                graphics.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                using (Graphics graphics = Graphics.FromImage(bmp))
+                {
+                    graphics.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                }
+                bmp.Save("test.png", ImageFormat.Png);
+                return bmp;
             }
-            bmp.Save("test.png", ImageFormat.Png);
-            return bmp;
         }
 
         public static Color GetPixelFromApplication(string procName, Point point)

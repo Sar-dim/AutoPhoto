@@ -47,5 +47,7 @@ namespace AutoPhoto.Services
         public bool IsSwitchToR2 { get; set; }
         public bool IsDuplicateSounds { get; set; }
         public string GamePath { get; set; }
+        public string TeleportButton { get; set; }
+        public bool IsCheckParalyze { get; set; }
     }
 }
