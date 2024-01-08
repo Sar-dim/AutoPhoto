@@ -40,9 +40,9 @@ namespace AutoPhoto
         private static extern IntPtr GetMessageExtraInfo();
 
         
-        private const string _r2ProccessName = "R2Client";
         private const string _potion = "Potion";
         private const string _hpPotion = "HP_Potion";
+        private string _r2ProccessName = "R2Client";
         private CancellationTokenSource _cancellationToken;
         private InputSimulator _inputSimulator = new InputSimulator();
         private bool _tpPressed = false;
@@ -72,6 +72,7 @@ namespace AutoPhoto
                     SwitchWindowCheckBox.IsChecked = startingData.IsSwitchToR2;
                     DuplicateSoundsCheckBox.IsChecked = startingData.IsDuplicateSounds;
                     GamePathTextBox.Text = startingData.GamePath;
+                    GameProccessTextBox.Text = startingData.GameProccess;
 
                     var counter = 0;
                     foreach (var item in TeleportButtonComboBox.Items)
@@ -98,8 +99,11 @@ namespace AutoPhoto
             try
             {
                 var delay = Int32.Parse(PotionDelay.Text);
-                _cancellationToken = new CancellationTokenSource();
-                
+                _r2ProccessName = GameProccessTextBox.Text;
+
+                if (_cancellationToken == null || _cancellationToken.IsCancellationRequested)
+                    _cancellationToken = new CancellationTokenSource();
+
                 FileService.SaveToFile(CreateDataForFile());
 
                 PotionButton.IsEnabled = false;
@@ -140,7 +144,10 @@ namespace AutoPhoto
                 Point point = new Point(teleportPixelX, teleportPixelY);
                 var delay = Int32.Parse(TeleportDelay.Text);
                 GraphicService.R2Path = GamePathTextBox.Text;
-                _cancellationToken = new CancellationTokenSource();
+                _r2ProccessName = GameProccessTextBox.Text;
+
+                if (_cancellationToken == null || _cancellationToken.IsCancellationRequested)
+                    _cancellationToken = new CancellationTokenSource();
 
                 FileService.SaveToFile(CreateDataForFile());
 
@@ -300,7 +307,7 @@ namespace AutoPhoto
                     }
                     catch (Exception)
                     { }
-                } while (true);
+                } while (!_cancellationToken.IsCancellationRequested);
             });
         }
 
@@ -313,14 +320,6 @@ namespace AutoPhoto
                 {
                     try
                     {
-                        //FileInfo oFileInfodts = new FileInfo(filePath + "\\sound\\effect\\dts.wav");
-                        //if (oFileInfodts.LastAccessTime > DateTime.Now.AddSeconds(-5))
-                        //{
-                        //    SoundPlayer player = new SoundPlayer("sound\\effect\\dts.wav");
-                        //    player.Play();
-                        //    Thread.Sleep(1000);
-                        //}
-
                         FileInfo oFileInfoEF_1182 = new FileInfo(filePath + "\\sound\\effect\\EF_1182.wav");
                         if (oFileInfoEF_1182.LastAccessTime > DateTime.Now.AddSeconds(-5))
                         {
@@ -332,7 +331,7 @@ namespace AutoPhoto
                     }
                     catch (Exception)
                     {}
-                } while (true);
+                } while (!_cancellationToken.IsCancellationRequested);
             });
         }
 
@@ -423,6 +422,7 @@ namespace AutoPhoto
                 IsSwitchToR2 = SwitchWindowCheckBox.IsChecked ?? false,
                 IsDuplicateSounds = DuplicateSoundsCheckBox.IsChecked ?? false,
                 GamePath = GamePathTextBox.Text,
+                GameProccess = GameProccessTextBox.Text,
                 TeleportButton = TeleportButtonComboBox.SelectedItem != null ? (TeleportButtonComboBox.SelectedItem as TextBlock).Text : string.Empty,
                 IsCheckParalyze = ParalyzeCheckBox.IsChecked ?? false,
             };

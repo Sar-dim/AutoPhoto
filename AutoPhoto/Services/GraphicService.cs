@@ -64,7 +64,6 @@ namespace AutoPhoto.Services
         public static Dictionary<string, Color> GetPixelsFromApplication(string procName, Dictionary<string, Point> points)
         {
             var proc = Process.GetProcessesByName(procName).First(x => x.MainModule.FileName.Contains(R2Path));
-            //proc.MainModule.FileName
             var rect = new Rect();
             GetWindowRect(proc.MainWindowHandle, ref rect);
             

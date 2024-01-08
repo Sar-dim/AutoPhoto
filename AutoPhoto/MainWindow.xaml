@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoPhoto"
         mc:Ignorable="d"
-        Title="AutoPhoto" Height="600" Width="217">
+        Title="AutoPhoto" Height="640" Width="217">
     <Grid>
         <StackPanel Width="200" Orientation="Vertical" HorizontalAlignment="Left">
             <StackPanel Margin="5" Orientation="Vertical">
@@ -83,6 +83,8 @@
             <StackPanel Width="190" Margin="5" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Border CornerRadius="6" BorderBrush="Gray" Background="LightGray" BorderThickness="2">
                     <StackPanel>
+                        <TextBlock Width="115" HorizontalAlignment="Center">Название процесса</TextBlock>
+                        <TextBox Margin="5" x:Name="GameProccessTextBox"></TextBox>
                         <TextBlock Width="115" HorizontalAlignment="Center">Путь к папке с игрой</TextBlock>
                         <TextBox Margin="5" x:Name="GamePathTextBox"></TextBox>
                         <CheckBox Width="165" Margin="5" x:Name="DuplicateSoundsCheckBox" HorizontalContentAlignment="Center">Дублировать звуки шаров</CheckBox>
